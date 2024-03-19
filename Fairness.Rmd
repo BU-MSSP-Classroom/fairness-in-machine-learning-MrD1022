@@ -233,7 +233,7 @@ The dataset used to predict whether income exceeds $50K/yr based on census data.
 ```{r}
 data("adult_train", package = "mlr3fairness")
 # data("adult_test", package = "mlr3fairness")
-?adult_train
+#?adult_train
 ```
 
 Here are the EDA result.
@@ -244,6 +244,7 @@ ggplot(melt(adult_train,id.vars = "target"))+
 
 Researchers wants to know who makes more money.  So they fit a logistic regression.
 ```{r}
+
 adult_glm_model <- glm(target~ age+workclass+education_num+marital_status+occupation+relationship+race+sex, 
   ,data=adult_train,family=binomial(link="logit"))
 ```
@@ -322,10 +323,26 @@ Do you see any problem with this model with protected attributes such as race an
 
 Choose one of the data described above as your target problem.
 
+```{r}
+tr <- adult_train
+# P(>50K | Female)
+n_females_50k <- nrow(subset(tr, sex == 'Female' & target == '>50K'))
+n_females <- nrow(subset(tr, sex == 'Female'))
+p_female_50k <- n_females_50k / n_females
+# P(>50K | Male)
+n_males_50k <- nrow(subset(tr, sex == 'Male' & target == '>50K'))
+n_males <- nrow(subset(tr, sex == 'Male'))
+p_male_50k <- n_males_50k / n_males
+# P(>50K)
+n_50k <- nrow(subset(tr,target == '>50K'))
+p_50k <- n_50k/nrow(tr)
+
+
+```
+
+
 ~~~
-Please write your answer in full sentences.
-
-
+Please write your answer in full sentences
 ~~~
 
 Discuss what a favorable label in this problem is and what does a favorable label grant the affected user?
